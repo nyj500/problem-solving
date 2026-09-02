@@ -30,13 +30,15 @@ class Subway
         }
     }
 
-    private List<Station> stations;
-    private List<Edge> edges;
+    public List<Station> stations;
+    public List<Edge> edges;
+    public Dictionary<Station, List<Edge>> edgeInfo;
 
     public Subway()
     {
         this.stations = new List<Station>();
         this.edges = new List<Edge>();
+        this.edgeInfo = new Dictionary<Station, List<Edge>>();
     }
 
     public Station AddStation(int lineNumber, string name)
@@ -51,11 +53,23 @@ class Subway
         this.stations.Remove(station);
     }
 
-    public Edge AddEdge(Station from, Station to, int weight)
+    public void AddEdge(Station from, Station to, int weight)
     {
-        var edge = new Edge(from, to, weight);
-        this.edges.Add(edge);
-        return edge;
+        // 양방향 경로 추가
+        var edge1 = new Edge(from, to, weight);
+        this.edges.Add(edge1);
+        if (!edgeInfo.ContainsKey(from))
+        {
+            edgeInfo[from] = new List<Edge>();
+        }
+        this.edgeInfo[from].Add(edge1);
+        var edge2 = new Edge(to, from, weight);
+        this.edges.Add(edge2);
+        if (!edgeInfo.ContainsKey(to))
+        {
+            edgeInfo[to] = new List<Edge>();
+        }
+        this.edgeInfo[to].Add(edge2);
     }
 
     public void RemoveEdge(Edge edge)
@@ -67,7 +81,7 @@ class Subway
     {
         foreach (var edge in edges)
         {
-            Console.Write($"Edge: {edge.From.Name} -> {edge.To.Name}, Weight: {edge.Weight}");
+            Console.WriteLine($"Edge: {edge.From.Name} -> {edge.To.Name}, Weight: {edge.Weight}");
         }
     }
 }
