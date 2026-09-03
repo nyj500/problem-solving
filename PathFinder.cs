@@ -9,18 +9,21 @@ class PathFinder
     public PathFinder(Subway subway)
     {
         this.subway = subway;
+        path = new Dictionary<string, string>();
+        pathLine = new Dictionary<string, int>();
     }
+
+    private Dictionary<string, string> path; // 다음 역(경로)을 저장
+    private Dictionary<string, int> pathLine; // 다음 역의 호선을 저장
+    private int totalTime = 0;
 
     public void FindShortestPath(Subway.Station startStation, Subway.Station endStation)
     {
         string startStationName = startStation.Name;
         string endStationName = endStation.Name;
-        var g = subway.edges;
-        int n = subway.stations.Count;
-        int m = subway.edges.Count;
         Dictionary<string, int> d = InitVertexWeightDic();
         PriorityQueue<string, int> pq = new PriorityQueue<string, int>();
-        Dictionary<string, string> path = new Dictionary<string, string>();
+  
         List<Subway.Edge> edges = subway.edgeInfo[startStationName];
         int w = 0;
         
@@ -40,25 +43,23 @@ class PathFinder
                     pq.Enqueue(edge.To.Name, d[edge.To.Name]);
                     
                     path[edge.From.Name] = edge.To.Name;
+                    pathLine[edge.From.Name] = edge.LineNumber;
                 }         
             }
         }
-
+        totalTime = d[endStationName];
         // PrintD(d);
         // return list of stations;
+        List<string> result = new List<string>();
         string currentPath = startStationName;
-        while(!(endStationName == startStationName))
+        // while(!(endStationName == startStationName))
+        while (!(currentPath == endStationName))
         {
-            if (currentPath == endStationName) 
-            {
-                Console.Write($"{currentPath}");
-                break;
-            }
-            Console.Write($"{currentPath} -> ");
+            result.Add(currentPath);
             currentPath = path[currentPath];
         }
-        Console.WriteLine();
-        Console.WriteLine($"소요 시간: {d[endStationName]/60} 분 {d[endStationName] % 60} 초");
+        result.Add(endStationName);
+        PrintResult(result);
     }
 
     private Dictionary<string, int> InitVertexWeightDic()
@@ -78,5 +79,21 @@ class PathFinder
         {
             Console.WriteLine($"ToStation: {kv.Key}, Weight: {kv.Value}");
         }
+    }
+
+    private void PrintResult(List<string> result)
+    {
+        for(int i = 0; i < result.Count - 1; i++)
+        {
+            Console.Write(result[i]);
+            if (i > 0 && pathLine[result[i]] != pathLine[result[i-1]])
+            {
+                Console.Write(" (환승)");
+                totalTime += 180;
+            }
+            Console.Write(" -> ");
+        }
+        Console.WriteLine(result[result.Count - 1]);
+        Console.WriteLine($"소요 시간: {totalTime/60} 분 {totalTime % 60} 초 ");
     }
 }

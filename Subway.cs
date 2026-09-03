@@ -21,12 +21,14 @@ class Subway
         public Station From { get; private set; }
         public Station To { get; private set; }
         public int Weight { get; private set; }
+        public int LineNumber { get; private set;}
 
-        public Edge(Station from, Station to, int weight)
+        public Edge(Station from, Station to, int weight, int lineNumber)
         {
             this.From = from;
             this.To = to;
             this.Weight = weight;
+            this.LineNumber = lineNumber;
         }
     }
 
@@ -60,15 +62,15 @@ class Subway
         this.stations.Remove(station);
     }
 
-    public void AddEdge(Station from, Station to, int weight)
+    public void AddEdge(Station from, Station to, int weight, int lineNumber)
     {
         if (from == null || to == null) return;
         
-        var edge1 = new Edge(from, to, weight);
+        var edge1 = new Edge(from, to, weight, lineNumber);
         this.edges.Add(edge1);
         this.edgeInfo[from.Name].Add(edge1);
         
-        var edge2 = new Edge(to, from, weight);
+        var edge2 = new Edge(to, from, weight, lineNumber);
         this.edges.Add(edge2);
         this.edgeInfo[to.Name].Add(edge2);
     }
@@ -90,7 +92,7 @@ class Subway
     {
         foreach (var edge in edges)
         {
-            Console.WriteLine($"Edge: {edge.From.Name} -> {edge.To.Name}, Weight: {edge.Weight}");
+            Console.WriteLine($"Edge: {edge.From.Name} -> {edge.To.Name}, Weight: {edge.Weight}, Line: {edge.LineNumber}");
         }
     }
 
@@ -136,7 +138,7 @@ class Subway
 
             var a = AddStation(lineNumber, stationA);
             var b = AddStation(lineNumber, stationB);
-            AddEdge(a, b, weight);
+            AddEdge(a, b, weight, lineNumber);
         }
     }
 }
