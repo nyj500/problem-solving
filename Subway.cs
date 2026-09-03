@@ -30,13 +30,13 @@ class Subway
         }
     }
 
-    public List<Station> stations;
+    public HashSet<Station> stations;
     public List<Edge> edges;
     public Dictionary<Station, List<Edge>> edgeInfo;
-
+   
     public Subway()
     {
-        this.stations = new List<Station>();
+        this.stations = new HashSet<Station>();
         this.edges = new List<Edge>();
         this.edgeInfo = new Dictionary<Station, List<Edge>>();
     }
@@ -82,6 +82,26 @@ class Subway
         foreach (var edge in edges)
         {
             Console.WriteLine($"Edge: {edge.From.Name} -> {edge.To.Name}, Weight: {edge.Weight}");
+        }
+    }
+
+    public void WriteSubwayInfo(List<string[]> values)
+    {
+        int lineNumber = 0;
+        string stationA = null;
+        string stationB = null;
+        int weight = 0;
+
+        foreach (var v in values)
+        {
+            lineNumber = int.Parse(v[0]);
+            stationA = v[1];
+            stationB = v[2];
+            weight = int.Parse(v[3]);
+
+            var a = AddStation(lineNumber, stationA);
+            var b = AddStation(lineNumber, stationB);
+            AddEdge(a, b, weight);
         }
     }
 }
