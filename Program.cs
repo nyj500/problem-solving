@@ -24,12 +24,13 @@ class Program
 
         // subway.PrintEdges();
         // subway.PrintStations();
-        subway.PrintEdgeInfo();
+        // subway.PrintEdgeInfo();
 
         var pathFinder = new PathFinder(subway);
 
-        Console.WriteLine("출발역과 도착역을 입력하세요: ");
+        Console.WriteLine("출발역: ");
         string s = Console.ReadLine();
+        Console.WriteLine("도착역: ");
         string e = Console.ReadLine();
         pathFinder.FindShortestPath(subway.FindStation(s), subway.FindStation(e));
     }

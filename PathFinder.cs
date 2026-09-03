@@ -13,17 +13,20 @@ class PathFinder
 
     public void FindShortestPath(Subway.Station startStation, Subway.Station endStation)
     {
-        string s = startStation.Name;
-        string e = endStation.Name;
+        string startStationName = startStation.Name;
+        string endStationName = endStation.Name;
         var g = subway.edges;
         int n = subway.stations.Count;
         int m = subway.edges.Count;
         Dictionary<string, int> d = InitVertexWeightDic();
-        d[s] = 0;
         PriorityQueue<string, int> pq = new PriorityQueue<string, int>();
-        pq.Enqueue(s, 0);
+        Dictionary<string, string> path = new Dictionary<string, string>();
+        List<Subway.Edge> edges = subway.edgeInfo[startStationName];
         int w = 0;
-        List<Subway.Edge> edges = subway.edgeInfo[s];
+        
+        d[startStationName] = 0;
+        pq.Enqueue(startStationName, 0);
+        
         while (pq.Count > 0)
         {
             edges = subway.edgeInfo[pq.Peek()];
@@ -35,12 +38,27 @@ class PathFinder
                 {
                     d[edge.To.Name] = w + edge.Weight;
                     pq.Enqueue(edge.To.Name, d[edge.To.Name]);
+                    
+                    path[edge.From.Name] = edge.To.Name;
                 }         
             }
         }
 
-        PrintD(d);
+        // PrintD(d);
         // return list of stations;
+        string currentPath = startStationName;
+        while(!(endStationName == startStationName))
+        {
+            if (currentPath == endStationName) 
+            {
+                Console.Write($"{currentPath}");
+                break;
+            }
+            Console.Write($"{currentPath} -> ");
+            currentPath = path[currentPath];
+        }
+        Console.WriteLine();
+        Console.WriteLine($"소요 시간: {d[endStationName]/60} 분 {d[endStationName] % 60} 초");
     }
 
     private Dictionary<string, int> InitVertexWeightDic()
