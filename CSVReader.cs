@@ -36,13 +36,7 @@ class CSVReader
                         {
                             throw new ArgumentNullException("행에 빈 칸이 존재합니다.");
                         }
-                        for (int i = 0; i < values.Length; i++)
-                        {
-                            result.Add(values);
-                            // Console.Write(values[i]);
-                            // if (i != values.Length - 1)
-                            //     Console.Write(", ");
-                        }
+                        result.Add(values);
                     }
 
                     return result;

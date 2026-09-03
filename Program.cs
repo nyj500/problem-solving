@@ -24,11 +24,11 @@ class Program
 
         subway.PrintEdges();
 
-        // var pathFinder = new PathFinder(subway);
+        var pathFinder = new PathFinder(subway);
 
         // Console.WriteLine("출발역을 입력하세요: ");
         // string stationA = Console.ReadLine();
-
+        
         // Console.WriteLine("도착역을 입력하세요: ");
         // string stationB = Console.ReadLine();
 

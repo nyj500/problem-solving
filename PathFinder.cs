@@ -21,7 +21,7 @@ class PathFinder
         PriorityQueue<Subway.Station, int> pq = new PriorityQueue<Subway.Station, int>();
         pq.Enqueue(s, 0);
         int w = 0;
-        List<Subway.Edge> edges = subway.edgeInfo[s];
+        HashSet<Subway.Edge> edges = subway.edgeInfo[s];
         while (pq.Count > 0)
         {
             edges = subway.edgeInfo[pq.Peek()];
