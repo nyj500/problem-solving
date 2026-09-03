@@ -24,7 +24,7 @@ class Program
 
         // subway.PrintEdges();
         // subway.PrintStations();
-        // subway.PrintEdgeInfo();
+        subway.PrintEdgeInfo();
 
         var pathFinder = new PathFinder(subway);
 

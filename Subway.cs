@@ -45,18 +45,14 @@ class Subway
 
     public Station AddStation(int lineNumber, string name)
     {
-        FindStation(name);
+        Station station = FindStation(name);
         if (!isInStations)
         {
-            var station = new Station(lineNumber, name);
+            station = new Station(lineNumber, name);
             this.stations.Add(station);
             this.edgeInfo.Add(name, new List<Edge>());
-            return station;
         }
-        else
-        {
-            return null;
-        }
+        return station;
     }
 
     public void RemoveStation(Station station)
@@ -67,7 +63,7 @@ class Subway
     public void AddEdge(Station from, Station to, int weight)
     {
         if (from == null || to == null) return;
-
+        
         var edge1 = new Edge(from, to, weight);
         this.edges.Add(edge1);
         this.edgeInfo[from.Name].Add(edge1);
@@ -102,7 +98,10 @@ class Subway
     {
         foreach (var infos in edgeInfo)
         {
-            Console.WriteLine($"EdgeInfo: {infos.Key}"); 
+            Console.Write($"EdgeInfo: {infos.Key}, ");
+            foreach (Edge edge in infos.Value)
+                Console.Write($"{edge.To.Name}, ");
+            Console.WriteLine();
         }
     }
 
