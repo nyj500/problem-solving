@@ -30,22 +30,33 @@ class Subway
         }
     }
 
-    public HashSet<Station> stations;
-    public HashSet<Edge> edges;
-    public Dictionary<Station, HashSet<Edge>> edgeInfo;
+    public List<Station> stations;
+    public List<Edge> edges;
+    public Dictionary<string, List<Edge>> edgeInfo;
+
+    private bool isInStations = false;
    
     public Subway()
     {
-        this.stations = new HashSet<Station>();
-        this.edges = new HashSet<Edge>();
-        this.edgeInfo = new Dictionary<Station, HashSet<Edge>>();
+        this.stations = new List<Station>();
+        this.edges = new List<Edge>();
+        this.edgeInfo = new Dictionary<string, List<Edge>>();
     }
 
     public Station AddStation(int lineNumber, string name)
     {
-        var station = new Station(lineNumber, name);
-        this.stations.Add(station);
-        return station;
+        FindStation(name);
+        if (!isInStations)
+        {
+            var station = new Station(lineNumber, name);
+            this.stations.Add(station);
+            this.edgeInfo.Add(name, new List<Edge>());
+            return station;
+        }
+        else
+        {
+            return null;
+        }
     }
 
     public void RemoveStation(Station station)
@@ -55,28 +66,28 @@ class Subway
 
     public void AddEdge(Station from, Station to, int weight)
     {
-        // 양방향 경로 추가
+        if (from == null || to == null) return;
+
         var edge1 = new Edge(from, to, weight);
         this.edges.Add(edge1);
-        // Console.WriteLine($"Edge: {edge1.From.Name} -> {edge1.To.Name}, Weight: {edge1.Weight}");
-        if (!edgeInfo.ContainsKey(from))
-        {
-            edgeInfo[from] = new HashSet<Edge>();
-        }
-        this.edgeInfo[from].Add(edge1);
+        this.edgeInfo[from.Name].Add(edge1);
+        
         var edge2 = new Edge(to, from, weight);
         this.edges.Add(edge2);
-        if (!edgeInfo.ContainsKey(to))
-        {
-            edgeInfo[to] = new HashSet<Edge>();
-        }
-        this.edgeInfo[to].Add(edge2);
-        // Console.WriteLine($"Edge: {edge2.From.Name} -> {edge2.To.Name}, Weight: {edge2.Weight}");
+        this.edgeInfo[to.Name].Add(edge2);
     }
 
     public void RemoveEdge(Edge edge)
     {
         this.edges.Remove(edge);
+    }
+
+    public void PrintStations()
+    {
+        foreach (var station in stations)
+        {
+            Console.WriteLine($"Station: {station.Name}, line: {station.LineNumber}");
+        }
     }
 
     public void PrintEdges()
@@ -87,13 +98,35 @@ class Subway
         }
     }
 
+    public void PrintEdgeInfo()
+    {
+        foreach (var infos in edgeInfo)
+        {
+            Console.WriteLine($"EdgeInfo: {infos.Key}"); 
+        }
+    }
+
+    public Station FindStation(string name)
+    {
+        isInStations = false;
+        foreach (var s in stations)
+        {
+            if (s.Name == name)
+            {
+                isInStations = true;
+                return s;
+            }                
+        }
+
+        return null;
+    }
+
     public void WriteSubwayInfo(List<string[]> values)
     {
         int lineNumber = 0;
         string stationA = null;
         string stationB = null;
         int weight = 0;
-        Console.WriteLine($"{values.Count}");
 
         foreach (var v in values)
         {

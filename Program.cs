@@ -22,17 +22,15 @@ class Program
         // subway.AddEdge(test1, hongik, 10);
         // subway.AddEdge(test1, ahn, 10);
 
-        subway.PrintEdges();
+        // subway.PrintEdges();
+        // subway.PrintStations();
+        // subway.PrintEdgeInfo();
 
         var pathFinder = new PathFinder(subway);
 
-        // Console.WriteLine("출발역을 입력하세요: ");
-        // string stationA = Console.ReadLine();
-        
-        // Console.WriteLine("도착역을 입력하세요: ");
-        // string stationB = Console.ReadLine();
-
-        
-        // pathFinder.FindShortestPath(hongik, ahn);
+        Console.WriteLine("출발역과 도착역을 입력하세요: ");
+        string s = Console.ReadLine();
+        string e = Console.ReadLine();
+        pathFinder.FindShortestPath(subway.FindStation(s), subway.FindStation(e));
     }
 }

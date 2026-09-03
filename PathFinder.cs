@@ -11,17 +11,19 @@ class PathFinder
         this.subway = subway;
     }
 
-    public void FindShortestPath(Subway.Station s, Subway.Station e)
+    public void FindShortestPath(Subway.Station startStation, Subway.Station endStation)
     {
+        string s = startStation.Name;
+        string e = endStation.Name;
         var g = subway.edges;
         int n = subway.stations.Count;
         int m = subway.edges.Count;
-        Dictionary<Subway.Station, int> d = InitVertexWeightDic();
+        Dictionary<string, int> d = InitVertexWeightDic();
         d[s] = 0;
-        PriorityQueue<Subway.Station, int> pq = new PriorityQueue<Subway.Station, int>();
+        PriorityQueue<string, int> pq = new PriorityQueue<string, int>();
         pq.Enqueue(s, 0);
         int w = 0;
-        HashSet<Subway.Edge> edges = subway.edgeInfo[s];
+        List<Subway.Edge> edges = subway.edgeInfo[s];
         while (pq.Count > 0)
         {
             edges = subway.edgeInfo[pq.Peek()];
@@ -29,10 +31,10 @@ class PathFinder
             pq.Dequeue();
             foreach (var edge in edges)
             {
-                if (w + edge.Weight < d[edge.To])
+                if (w + edge.Weight < d[edge.To.Name])
                 {
-                    d[edge.To] = w + edge.Weight;
-                    pq.Enqueue(edge.To, d[edge.To]);
+                    d[edge.To.Name] = w + edge.Weight;
+                    pq.Enqueue(edge.To.Name, d[edge.To.Name]);
                 }         
             }
         }
@@ -41,22 +43,22 @@ class PathFinder
         // return list of stations;
     }
 
-    private Dictionary<Subway.Station, int> InitVertexWeightDic()
+    private Dictionary<string, int> InitVertexWeightDic()
     {
-        Dictionary<Subway.Station, int> dic = new Dictionary<Subway.Station, int>();
+        Dictionary<string, int> dic = new Dictionary<string, int>();
         foreach(var station in subway.stations)
         {
-            dic[station] = int.MaxValue;
+            dic[station.Name] = int.MaxValue;
         }
 
         return dic;
     }
 
-    private void PrintD(Dictionary<Subway.Station, int> d) // 시작점으로부터 각 모든 점(arg1)까지 걸리는 시간(arg2)
+    private void PrintD(Dictionary<string, int> d) // 시작점으로부터 각 모든 점(arg1)까지 걸리는 시간(arg2)
     {
         foreach(var kv in d)
         {
-            Console.WriteLine($"ToStation: {kv.Key.Name}, Weight: {kv.Value}");
+            Console.WriteLine($"ToStation: {kv.Key}, Weight: {kv.Value}");
         }
     }
 }
