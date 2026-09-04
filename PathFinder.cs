@@ -94,11 +94,10 @@ class PathFinder
         for (int i = 0; i < result.Count - 1; i++)
         {
             Console.Write(result[i]);
-            if (pathLine[result[i]] != pathLine[result[i+1]])
-            {
-                Console.Write("(환승)");
-                totalTime += 180;
-            }
+            // if (pathLine[result[i]] != pathLine[result[i+1]])
+            // {
+            //     Console.Write("(환승)");
+            // }
             Console.Write("->");
         }
         Console.WriteLine(endStationName);
