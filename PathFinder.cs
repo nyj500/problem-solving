@@ -45,7 +45,10 @@ class PathFinder
                     pq.Enqueue(edge.To.Name, d[edge.To.Name]);
                     
                     path[edge.To.Name] = edge.From.Name; // 이전 최소 루트 저장
-                    pathLine[edge.To.Name] = edge.LineNumber; 
+                    pathLine[edge.To.Name] = edge.LineNumber; // To역에 올 때 탄 호선 숫자 
+
+                    if (pathLine.ContainsKey(edge.From.Name) && pathLine[edge.To.Name] != pathLine[edge.From.Name])
+                        d[edge.To.Name] += 180;
                     // Console.WriteLine($"{edge.From.Name} -> {edge.To.Name}");
                 }         
             }
@@ -90,14 +93,14 @@ class PathFinder
     private void PrintResult(List<string> result)
     {
         Console.WriteLine($"[탐색 결과], {startStationName} -> {endStationName}");
-        Console.Write($"{startStationName} -> ");
+        Console.Write($"{startStationName}->");
         for (int i = 0; i < result.Count - 1; i++)
         {
             Console.Write(result[i]);
-            // if (pathLine[result[i]] != pathLine[result[i+1]])
-            // {
-            //     Console.Write("(환승)");
-            // }
+            if (pathLine[result[i]] != pathLine[result[i+1]])
+            {
+                Console.Write("(환승)");
+            }
             Console.Write("->");
         }
         Console.WriteLine(endStationName);
