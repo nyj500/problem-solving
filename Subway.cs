@@ -4,12 +4,13 @@ using System.Linq;
 
 class Subway
 {
+    static int TOTAL_LINE = 9;
     public class Station
     {
-        public int LineNumber { get; private set; }
+        public List<int> LineNumber { get; private set; }
         public string Name { get; private set; }
 
-        public Station(int lineNumber, string name)
+        public Station(List<int> lineNumber, string name)
         {
             this.LineNumber = lineNumber;
             this.Name = name;
@@ -59,9 +60,18 @@ class Subway
         Station station = FindStation(name);
         if (!isInStations)
         {
-            station = new Station(lineNumber, name);
+            List<int> lineNumbers = new List<int>(TOTAL_LINE)
+            {
+                lineNumber
+            };
+            station = new Station(lineNumbers, name);
             this.stations.Add(station);
             this.edgeInfo.Add(name, new List<Edge>());
+        }
+        else
+        {
+            if (!station.LineNumber.Contains(lineNumber))
+                station.LineNumber.Add(lineNumber);
         }
         return station;
     }
@@ -93,7 +103,10 @@ class Subway
     {
         foreach (var station in stations)
         {
-            Console.WriteLine($"Station: {station.Name}, line: {station.LineNumber}");
+            Console.Write($"Station: {station.Name}, line: ");
+            foreach (var line in station.LineNumber)
+                Console.Write($"{line} ");
+            Console.WriteLine();
         }
     }
 
