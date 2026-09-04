@@ -27,9 +27,12 @@ class Program
 
         Console.Write("도착역: ");
         string? end = Console.ReadLine();
-        while (subway.FindStation(end) == null)
+        while (start == end || subway.FindStation(end) == null)
         {
-            Console.WriteLine($"{end}을(를) 찾을 수 없습니다.");
+            if (start == end)
+                Console.WriteLine("출발역과 도착역이 같습니다. 다시 입력해주세요.");
+            else
+                Console.WriteLine($"{end}을(를) 찾을 수 없습니다.");
             Console.Write("도착역: ");
             end = Console.ReadLine();
         }
