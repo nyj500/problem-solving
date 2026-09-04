@@ -8,7 +8,7 @@ class Program
 {
     static void Main()
     {
-        string csvPath = CSV_PATH;
+        string csvPath = CSV_FILE_NAME;
         var subway = new Subway(CSVReader.ReadCSV(csvPath));
         var pathFinder = new PathFinder(subway);
 
