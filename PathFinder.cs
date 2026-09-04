@@ -16,11 +16,13 @@ class PathFinder
     private Dictionary<string, string> path; // 다음 역(경로)을 저장
     private Dictionary<string, int> pathLine; // 다음 역의 호선을 저장
     private int totalTime = 0;
+    private string startStationName;
+    private string endStationName;
 
     public void FindShortestPath(Subway.Station startStation, Subway.Station endStation)
     {
-        string startStationName = startStation.Name;
-        string endStationName = endStation.Name;
+        startStationName = startStation.Name;
+        endStationName = endStation.Name;
         Dictionary<string, int> d = InitVertexWeightDic();
         PriorityQueue<string, int> pq = new PriorityQueue<string, int>();
   
@@ -42,23 +44,27 @@ class PathFinder
                     d[edge.To.Name] = w + edge.Weight;
                     pq.Enqueue(edge.To.Name, d[edge.To.Name]);
                     
-                    path[edge.From.Name] = edge.To.Name;
-                    pathLine[edge.From.Name] = edge.LineNumber;
+                    path[edge.To.Name] = edge.From.Name; // 이전 최소 루트 저장
+                    pathLine[edge.To.Name] = edge.LineNumber; 
+                    // Console.WriteLine($"{edge.From.Name} -> {edge.To.Name}");
                 }         
             }
         }
         totalTime = d[endStationName];
         // PrintD(d);
-        // return list of stations;
+
         List<string> result = new List<string>();
-        string currentPath = startStationName;
-        // while(!(endStationName == startStationName))
-        while (!(currentPath == endStationName))
+        string currentPath = endStationName;
+        // 역방향 추적, result에는 목적지까지의 최단 루트만 담기 (출발지는 제외)
+        while (!(currentPath == startStationName))
         {
-            result.Add(currentPath);
-            currentPath = path[currentPath];
+            if (path.ContainsKey(currentPath))
+            {
+                result.Add(currentPath);
+                currentPath = path[currentPath];
+            }
         }
-        result.Add(endStationName);
+        result.Reverse(); // 정방향
         PrintResult(result);
     }
 
@@ -83,17 +89,19 @@ class PathFinder
 
     private void PrintResult(List<string> result)
     {
-        for(int i = 0; i < result.Count - 1; i++)
+        Console.WriteLine($"[탐색 결과], {startStationName} -> {endStationName}");
+        Console.Write($"{startStationName} -> ");
+        for (int i = 0; i < result.Count - 1; i++)
         {
             Console.Write(result[i]);
-            if (i > 0 && pathLine[result[i]] != pathLine[result[i-1]])
+            if (pathLine[result[i]] != pathLine[result[i+1]])
             {
-                Console.Write(" (환승)");
+                Console.Write("(환승)");
                 totalTime += 180;
             }
-            Console.Write(" -> ");
+            Console.Write("->");
         }
-        Console.WriteLine(result[result.Count - 1]);
-        Console.WriteLine($"소요 시간: {totalTime/60} 분 {totalTime % 60} 초 ");
+        Console.WriteLine(endStationName);
+        Console.WriteLine($"총 소요 시간: {totalTime/60} 분 {totalTime % 60} 초\n");
     }
 }
