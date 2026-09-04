@@ -7,10 +7,10 @@
 - CSVReader: CSV파일의 정보를 추출하여 Subway에 담기 위해 설계된 클래스
 
 ## 개발 환경
-사용 언어: C#
-OS: macOS
-IDE: Visual Studio Code
-.NET SDK: 10.0
+- 사용 언어: C#
+- OS: macOS
+- IDE: Visual Studio Code
+- .NET SDK: 10.0
 
 ## 노선 정보 데이터
 ### subway-info.csv
