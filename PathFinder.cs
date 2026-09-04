@@ -16,8 +16,8 @@ class PathFinder
     private Dictionary<string, string> path; // 다음 역(경로)을 저장
     private Dictionary<string, int> pathLine; // 다음 역의 호선을 저장
     private int totalTime = 0;
-    private string startStationName;
-    private string endStationName;
+    private string startStationName = null;
+    private string endStationName = null;
 
     public void FindShortestPath(Subway.Station startStation, Subway.Station endStation)
     {
