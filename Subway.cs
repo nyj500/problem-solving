@@ -6,7 +6,7 @@ class Subway
 {
     public class Station
     {
-        public int LineNumber { get; set; }
+        public int LineNumber { get; private set; }
         public string Name { get; private set; }
 
         public Station(int lineNumber, string name)
@@ -43,6 +43,15 @@ class Subway
         this.stations = new List<Station>();
         this.edges = new List<Edge>();
         this.edgeInfo = new Dictionary<string, List<Edge>>();
+    }
+
+    public Subway(List<string[]> csvFile)
+    {
+        this.stations = new List<Station>();
+        this.edges = new List<Edge>();
+        this.edgeInfo = new Dictionary<string, List<Edge>>();
+        
+        WriteSubwayInfo(csvFile);
     }
 
     public Station AddStation(int lineNumber, string name)
@@ -118,7 +127,7 @@ class Subway
                 return s;
             }                
         }
-
+        
         return null;
     }
 

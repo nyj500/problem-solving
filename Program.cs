@@ -8,30 +8,31 @@ class Program
     static void Main()
     {
         string csvPath = "/Users/nyj500/coding-test/subway-graph/subway-info.csv";
-        CSVReader.ReadCSV(csvPath);
-        var subway = new Subway();
-        subway.WriteSubwayInfo(CSVReader.ReadCSV(csvPath));
-        // var hongik = subway.AddStation(2, "홍대입구");
-        // var sinchon = subway.AddStation(2, "신촌");
-        // var ewha = subway.AddStation(2, "이대");
-        // var ahn = subway.AddStation(2, "아현");
-        // var test1 = subway.AddStation(1, "1");
-        // subway.AddEdge(hongik, sinchon, 5);
-        // subway.AddEdge(sinchon, ewha, 10);
-        // subway.AddEdge(ewha, ahn, 15);
-        // subway.AddEdge(test1, hongik, 10);
-        // subway.AddEdge(test1, ahn, 10);
+        var subway = new Subway(CSVReader.ReadCSV(csvPath));
+        var pathFinder = new PathFinder(subway);
 
         // subway.PrintEdges();
         // subway.PrintStations();
         // subway.PrintEdgeInfo();
 
-        var pathFinder = new PathFinder(subway);
+        Console.Write("출발역: ");
+        string? start = Console.ReadLine();
+        while (subway.FindStation(start) == null) 
+        {
+            Console.WriteLine($"{start}을(를) 찾을 수 없습니다.");
+            Console.Write("출발역: ");
+            start = Console.ReadLine();
+        }
 
-        Console.WriteLine("출발역: ");
-        string s = Console.ReadLine();
-        Console.WriteLine("도착역: ");
-        string e = Console.ReadLine();
-        pathFinder.FindShortestPath(subway.FindStation(s), subway.FindStation(e));
+        Console.Write("도착역: ");
+        string? end = Console.ReadLine();
+        while (subway.FindStation(end) == null)
+        {
+            Console.WriteLine($"{end}을(를) 찾을 수 없습니다.");
+            Console.Write("도착역: ");
+            end = Console.ReadLine();
+        }
+
+        pathFinder.FindShortestPath(start, end);
     }
 }

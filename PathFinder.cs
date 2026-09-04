@@ -19,10 +19,10 @@ class PathFinder
     private string startStationName = null;
     private string endStationName = null;
 
-    public void FindShortestPath(Subway.Station startStation, Subway.Station endStation)
+    public void FindShortestPath(string start, string end)
     {
-        startStationName = startStation.Name;
-        endStationName = endStation.Name;
+        this.startStationName = start;
+        this.endStationName = end;
         Dictionary<string, int> d = InitVertexWeightDic();
         PriorityQueue<string, int> pq = new PriorityQueue<string, int>();
   
