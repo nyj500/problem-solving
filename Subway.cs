@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static Constants;
 
 class Subway
 {
-    static int TOTAL_LINE = 9;
     public class Station
     {
         public List<int> LineNumber { get; private set; }

@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using static Constants;
 
 class Program
 {
     static void Main()
     {
-        string csvPath = "/Users/nyj500/coding-test/subway-graph/subway-info.csv";
+        string csvPath = CSV_PATH;
         var subway = new Subway(CSVReader.ReadCSV(csvPath));
         var pathFinder = new PathFinder(subway);
 
