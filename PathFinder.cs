@@ -24,12 +24,12 @@ class PathFinder
     {
         this.startStationName = start;
         this.endStationName = end;
-        Dictionary<string, int> d = InitVertexWeightDic();
+        Dictionary<string, int> d = new Dictionary<string, int>();
         PriorityQueue<string, int> pq = new PriorityQueue<string, int>();
-  
         List<Subway.Edge> edges = subway.edgeInfo[startStationName];
         int w = 0;
-        
+
+        InitVertexWeightDic(d);
         d[startStationName] = 0;
         pq.Enqueue(startStationName, 0);
         
@@ -72,15 +72,12 @@ class PathFinder
         PrintResult(result);
     }
 
-    private Dictionary<string, int> InitVertexWeightDic()
+    private void InitVertexWeightDic(Dictionary<string, int> d)
     {
-        Dictionary<string, int> dic = new Dictionary<string, int>();
         foreach(var station in subway.stations)
         {
-            dic[station.Name] = int.MaxValue;
+            d[station.Name] = int.MaxValue;
         }
-
-        return dic;
     }
 
     private void PrintD(Dictionary<string, int> d) // 시작점으로부터 각 모든 점(arg1)까지 걸리는 시간(arg2)

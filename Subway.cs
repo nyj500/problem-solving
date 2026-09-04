@@ -76,11 +76,6 @@ class Subway
         return station;
     }
 
-    public void RemoveStation(Station station)
-    {
-        this.stations.Remove(station);
-    }
-
     public void AddEdge(Station from, Station to, int weight, int lineNumber)
     {
         if (from == null || to == null) return;
@@ -92,11 +87,6 @@ class Subway
         var edge2 = new Edge(to, from, weight, lineNumber);
         this.edges.Add(edge2);
         this.edgeInfo[to.Name].Add(edge2);
-    }
-
-    public void RemoveEdge(Edge edge)
-    {
-        this.edges.Remove(edge);
     }
 
     public void PrintStations()
